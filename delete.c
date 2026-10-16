@@ -1,5 +1,5 @@
-#include"header.h"
-void delete(void)
+  #include"header.h"
+void delete_node(void)
 {
 
         if(head==0)
@@ -15,53 +15,93 @@ void delete(void)
         {
                 printf("enter rollno to delete:\n");
                 scanf("%d",&num);
-                struct stu *del=head,*prev;
+                struct stu *del=head,*prev=NULL;
                 while(del)
                 {
+                        struct stu *q=del->next;
                         if(num==del->rollno)
                         {
-                             if(del==head)
-                               {
-                                 head=head->next;
-                               return ;
-                                }
                                 if(del==head)
-                                        head=del->next;
+                                        head=q;
                                 else
-                                        prev->next=del->next;
+                                        prev->next=q;
                                 free(del);
-                                return ;
+                                del=q;
                         }
                         prev=del;
-                        del=del->next;
+                        del=q;
                 }
                 printf("no rollon found..\n");
         }
-        else if(ch=='N' ||ch=='n')
+        else if(ch=='n'||ch=='N')
         {
-            printf("enter the name to delete:\n");
-                scanf("%s",name);
-                struct stu *del=head,*prev;
-                while(del)
+                char s[20];
+                int n;
+                printf("enter name to delete:\n");
+                scanf("%s",s);
+                struct stu *t=head;
+                int c=0;
+                while(t)
                 {
-                        if(strcmp(name,del->name)==0)
-                        {
-                            if(del==head)
-                               {
-                                 head=head->next;
-                                  return ;
-                                }
-                                if(del==head)
-                                        head=del->next;
-                                else
-                                        prev->next=del->next;
-                                free(del);
-                                return ;
-                        }
-                        prev=del;
-                        del=del->next;
+                        if(strcmp(t->name,s)==0)
+                                c++;
+                        t=t->next;
                 }
-                printf("no name found..\n");
+                if(c==0)
+                        printf("name not found:\n");
+
+                else if(c==1)
+                {
+                        struct stu *del=head,*prev=NULL;
+                        while(del)
+                        {
+                                struct stu *p=del->next;
+                                if(strcmp(s,del->name)==0)
+                                {
+                                        if(del==head)
+                                                head=p;
+                                        else
+                                                prev->next=p;
+                                        free(del);
+                                        break;
+                                }
+                                prev=del;
+                                del=p;
+                        }
+                        printf("deleted\n");
+                }
+
+                else
+                {
+                        int n;
+                        printf("duplicate name found %d times\n enter rollno to delete:\n",c);
+                        scanf("%d",&n);
+                        struct stu *del=head,*prev=NULL;
+                        int flag=0;
+                        while(del)
+                        {
+                                struct stu *p=del->next;
+                                if(strcmp(s,del->name)==0 &&n==del->rollno)
+                                {
+                                        flag=1;
+                                        if(del==head)
+                                                head=p;
+                                        else
+                                                prev->next=p;
+                                        free(del);
+                                        del=p;
+                                        break;
+                                }
+                                else
+                                {
+                                        prev=del;
+                                        del=p;
+                                }
+                        }
+                        if(flag==0)
+                                printf("rollno not foundfor that name\n");
+                        else
+                                printf("deleted\n");
+                }
         }
 }
-                                                         
